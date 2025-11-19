@@ -39,3 +39,7 @@
 
 # debug information files
 *.dwo
+
+# Custom Ignores
+en.subject.pdf
+.vscode/

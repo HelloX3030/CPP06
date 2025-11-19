@@ -1,11 +1,9 @@
 #include "ScalarConverter.hpp"
 
-// Detect NaN or Inf for either type
 static bool is_special(double d) {
     return std::isnan(d) || std::isinf(d);
 }
 
-// Correct “after decimal” logic: use DOUBLE, not float
 static bool has_after_dot(double d) {
     if (!std::isfinite(d))
         return false;
@@ -13,7 +11,6 @@ static bool has_after_dot(double d) {
     return std::modf(d, &intpart) != 0.0;
 }
 
-// Range checks
 static bool in_char_range(double d) {
     return std::isfinite(d) &&
         d >= std::numeric_limits<char>::min() &&
@@ -26,17 +23,16 @@ static bool in_int_range(double d) {
         d <= std::numeric_limits<int>::max();
 }
 
-// Correct float overflow check: casting must not change finite→inf
 static bool can_cast_to_float(double d) {
     float f2 = static_cast<float>(d);
     if (std::isfinite(d) && !std::isfinite(f2))
-        return false; // overflow occurred
+        return false;
     return true;
 }
 
 static void print(char c, int i, float f, double d) {
-    bool special = is_special(d);          // use canonical value
-    bool after_dot = has_after_dot(d);     // use canonical value
+    bool special = is_special(d);
+    bool after_dot = has_after_dot(d);
 
     // CHAR
     if (!in_char_range(d) || special) {
@@ -63,7 +59,6 @@ static void print(char c, int i, float f, double d) {
         std::cout << std::setprecision(std::numeric_limits<float>::max_digits10) << f << "f";
     std::cout << std::endl;
 
-    // DOUBLE — always representable, even inf/nan
     std::cout << "double: ";
     if (!after_dot && !special)
         std::cout << d << ".0";
@@ -91,7 +86,7 @@ void ScalarConverter::convert(const std::string& literal)
 
     // DOUBLE
     try {
-        d = std::stod(literal);               // may return inf silently
+        d = std::stod(literal);
         c = static_cast<char>(d);
         i = static_cast<int>(d);
         f = static_cast<float>(d);           // may overflow to inf
