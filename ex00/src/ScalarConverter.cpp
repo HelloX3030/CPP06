@@ -1,18 +1,34 @@
 #include "ScalarConverter.hpp"
 
+static bool is_special(float f, double d) {
+    return (std::isnan(f) || std::isnan(d) || std::isinf(f) || std::isinf(d));
+}
+
+static bool has_after_dot(float f, double d) {
+    return (f - static_cast<int>(f) != 0.0 || d - static_cast<int>(d) != 0.0);
+}
+
 static void print(char c, int i, float f, double d) {
+    bool special = is_special(f, d);
+    bool after_dot = has_after_dot(f, d);
+
     // Char
-    if (std::isprint(static_cast<unsigned char>(c)))
+    if (special)
+        std::cout << "char: impossible" << std::endl;
+    else if (std::isprint(static_cast<unsigned char>(c)))
         std::cout << "char: " << c << std::endl;
     else
         std::cout << "char: Non displayable" << std::endl;
 
     // Int
-    std::cout << "int: " << i << std::endl;
+    if (!special)
+        std::cout << "int: " << i << std::endl;
+    else
+        std::cout << "int: impossible" << std::endl;
 
     // Float
     std::cout << "float: ";
-    if (std::floor(f) == f && std::isfinite(f)) // whole number
+    if (!after_dot && !special)
         std::cout << f << ".0f";
     else
         std::cout << std::setprecision(std::numeric_limits<float>::max_digits10) << f << "f";
@@ -20,7 +36,7 @@ static void print(char c, int i, float f, double d) {
 
     // Double
     std::cout << "double: ";
-    if (std::floor(d) == d && std::isfinite(d))
+    if (!after_dot && !special)
         std::cout << d << ".0";
     else
         std::cout << std::setprecision(std::numeric_limits<double>::max_digits10) << d;
