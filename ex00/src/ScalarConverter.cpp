@@ -11,12 +11,30 @@ static bool has_after_dot(double d) {
     return std::modf(d, &intpart) != 0.0;
 }
 
+static bool in_char_range(double d) {
+    return std::isfinite(d) &&
+           d >= std::numeric_limits<char>::min() &&
+           d <= std::numeric_limits<char>::max();
+}
+
+static bool in_int_range(double d) {
+    return std::isfinite(d) &&
+           d >= std::numeric_limits<int>::min() &&
+           d <= std::numeric_limits<int>::max();
+}
+
+static bool in_float_range(double d) {
+    return std::isfinite(d) && 
+           d >= -std::numeric_limits<float>::max() &&
+           d <=  std::numeric_limits<float>::max();
+}
+
 static void print(char c, int i, float f, double d) {
     bool special = is_special(f, d);
     bool after_dot = has_after_dot(f);
 
     // Char
-    if (special)
+    if (special || !in_char_range(d))
         std::cout << "char: impossible" << std::endl;
     else if (std::isprint(static_cast<unsigned char>(c)))
         std::cout << "char: " << c << std::endl;
@@ -24,14 +42,16 @@ static void print(char c, int i, float f, double d) {
         std::cout << "char: Non displayable" << std::endl;
 
     // Int
-    if (!special)
+    if (!special && in_int_range(d))
         std::cout << "int: " << i << std::endl;
     else
         std::cout << "int: impossible" << std::endl;
 
     // Float
     std::cout << "float: ";
-    if (!after_dot && !special)
+    if (!in_float_range(d))
+        std::cout << "impossible";
+    else if (!after_dot && !special)
         std::cout << f << ".0f";
     else
         std::cout << std::setprecision(std::numeric_limits<float>::max_digits10) << f << "f";
