@@ -4,13 +4,16 @@ static bool is_special(float f, double d) {
     return (std::isnan(f) || std::isnan(d) || std::isinf(f) || std::isinf(d));
 }
 
-static bool has_after_dot(float f, double d) {
-    return (f - static_cast<int>(f) != 0.0 || d - static_cast<int>(d) != 0.0);
+static bool has_after_dot(double d) {
+    if (!std::isfinite(d))
+        return false;
+    double intpart;
+    return std::modf(d, &intpart) != 0.0;
 }
 
 static void print(char c, int i, float f, double d) {
     bool special = is_special(f, d);
-    bool after_dot = has_after_dot(f, d);
+    bool after_dot = has_after_dot(f);
 
     // Char
     if (special)
