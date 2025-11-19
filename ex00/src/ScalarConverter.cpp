@@ -1,13 +1,30 @@
 #include "ScalarConverter.hpp"
 
 static void print(char c, int i, float f, double d) {
-    if (std::isprint(c))
+    // Char
+    if (std::isprint(static_cast<unsigned char>(c)))
         std::cout << "char: " << c << std::endl;
     else
         std::cout << "char: Non displayable" << std::endl;
+
+    // Int
     std::cout << "int: " << i << std::endl;
-    std::cout << "float: " << f << std::endl;
-    std::cout << "double: " << d << std::endl;
+
+    // Float
+    std::cout << "float: ";
+    if (std::floor(f) == f && std::isfinite(f)) // whole number
+        std::cout << f << ".0f";
+    else
+        std::cout << std::defaultfloat << f << "f";
+    std::cout << std::endl;
+
+    // Double
+    std::cout << "double: ";
+    if (std::floor(d) == d && std::isfinite(d))
+        std::cout << d << ".0";
+    else
+        std::cout << std::defaultfloat << d;
+    std::cout << std::endl;
 }
 
 void ScalarConverter::convert(const std::string& literal)

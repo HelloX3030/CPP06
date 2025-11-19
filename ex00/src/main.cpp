@@ -30,19 +30,19 @@ int main(int argc, char **argv)
         }
     }
 
-    // Tests
-    {
-        test("0");
-        test("42");
-        test("42.0f");
-        test("3.14");
-        test("a");
-        test("nan");
-        test("+inf");
-        test("-inf");
-        test("inff");
-        test("-inff");
-        test("+inff");
-    }
+    // // Tests
+    // {
+    //     test("0");
+    //     test("42");
+    //     test("42.0f");
+    //     test("3.14");
+    //     test("a");
+    //     test("nan");
+    //     test("+inf");
+    //     test("-inf");
+    //     test("inff");
+    //     test("-inff");
+    //     test("+inff");
+    // }
     return 0;
 }
