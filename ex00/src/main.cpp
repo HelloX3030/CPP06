@@ -1,5 +1,17 @@
 #include "ScalarConverter.hpp"
 
+void test(const std::string& literal) {
+    std::cout << "=======================================================" << std::endl;
+    try
+    {
+        ScalarConverter::convert(literal);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 int main(int argc, char **argv)
 {
     // Base Application
@@ -8,21 +20,29 @@ int main(int argc, char **argv)
             std::cout << "Usage: ./a.out <literal>" << std::endl;
             return 1;
         }
-        ScalarConverter::convert(argv[1]);
+        try
+        {
+            ScalarConverter::convert(argv[1]);
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
+
     // Tests
     {
-        ScalarConverter::convert("0");
-        ScalarConverter::convert("42");
-        ScalarConverter::convert("42.0f");
-        ScalarConverter::convert("3.14");
-        ScalarConverter::convert("a");
-        ScalarConverter::convert("nan");
-        ScalarConverter::convert("+inf");
-        ScalarConverter::convert("-inf");
-        ScalarConverter::convert("inff");
-        ScalarConverter::convert("-inff");
-        ScalarConverter::convert("+inff");
+        test("0");
+        test("42");
+        test("42.0f");
+        test("3.14");
+        test("a");
+        test("nan");
+        test("+inf");
+        test("-inf");
+        test("inff");
+        test("-inff");
+        test("+inff");
     }
     return 0;
 }
