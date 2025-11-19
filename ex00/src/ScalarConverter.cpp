@@ -15,7 +15,7 @@ static void print(char c, int i, float f, double d) {
     if (std::floor(f) == f && std::isfinite(f)) // whole number
         std::cout << f << ".0f";
     else
-        std::cout << std::defaultfloat << f << "f";
+        std::cout << std::setprecision(std::numeric_limits<float>::max_digits10) << f << "f";
     std::cout << std::endl;
 
     // Double
@@ -23,7 +23,7 @@ static void print(char c, int i, float f, double d) {
     if (std::floor(d) == d && std::isfinite(d))
         std::cout << d << ".0";
     else
-        std::cout << std::defaultfloat << d;
+        std::cout << std::setprecision(std::numeric_limits<double>::max_digits10) << d;
     std::cout << std::endl;
 }
 
