@@ -34,7 +34,8 @@ void ScalarConverter::convert(const std::string& literal)
     float f;
     double d;
 
-    if (literal.length() == 1) {
+    // Char
+    if (literal.length() == 1 && !std::isdigit(literal[0])) {
         c = literal[0];
         i = static_cast<int>(c);
         f = static_cast<float>(c);
@@ -42,16 +43,20 @@ void ScalarConverter::convert(const std::string& literal)
         print(c, i, f, d);
         return;
     }
+
+    // Double
     try
     {
-        i = std::stoi(literal);
-        c = static_cast<char>(i);
-        f = static_cast<float>(i);
-        d = static_cast<double>(i);
+        d = std::stod(literal);
+        c = static_cast<char>(d);
+        i = static_cast<int>(d);
+        f = static_cast<float>(d);
         print(c, i, f, d);
         return;
-    } catch(const std::exception& e) {}
+    }
+    catch(const std::exception& e) {}
 
+    // Float
     try
     {
         f = std::stof(literal);
@@ -63,16 +68,16 @@ void ScalarConverter::convert(const std::string& literal)
     }
     catch(const std::exception& e) {}
 
+    // Int
     try
     {
-        d = std::stod(literal);
-        c = static_cast<char>(d);
-        i = static_cast<int>(d);
-        f = static_cast<float>(d);
+        i = std::stoi(literal);
+        c = static_cast<char>(i);
+        f = static_cast<float>(i);
+        d = static_cast<double>(i);
         print(c, i, f, d);
         return;
-    }
-    catch(const std::exception& e) {}
+    } catch(const std::exception& e) {}
     
     // Base Case
     throw std::invalid_argument("[ScalarConverter::convert] Invalid literal");
