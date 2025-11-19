@@ -10,10 +10,10 @@ vpath %.hpp include/
 vpath %.cpp src/
 
 # .h and .hpp files
-H_FILES := Data.hpp Serializer.hpp
+H_FILES := Base.hpp A.hpp B.hpp C.hpp
 
 # .cpp source files
-SRC_FILES := main.cpp Serializer.cpp Data.cpp
+SRC_FILES := main.cpp Base.cpp
 
 # Object directory and object files
 OBJ_DIR := obj
